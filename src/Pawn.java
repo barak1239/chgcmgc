@@ -1,13 +1,13 @@
 public class Pawn extends ConcretePiece{
     private Player owner;
     private String type;
-
+    private Position position;
     public Pawn(Player owner){
-    this.owner = owner;
-        if(this.owner.isPlayerOne())
-            this.type ="♙";
-        else
-            this.type="♟︎";
+    super(owner);
+    }
+    @Override
+    public String getType() {
+        return "♟";
     }
 
 }

@@ -1,8 +1,9 @@
 public class ConcretePiece implements Piece{
     private Player owner;
     private String type;
-
-    public ConcretePiece(){
+    private Position position;
+    public ConcretePiece(Player owner){
+        this.owner = owner;
     }
     @Override
     public Player getOwner() {
@@ -13,5 +14,4 @@ public class ConcretePiece implements Piece{
     public String getType() {
         return type;
     }
-
 }
