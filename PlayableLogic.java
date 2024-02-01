@@ -1,4 +1,3 @@
-package assiment1;
 
 /**
  * The PlayableLogic interface defines the contract for the game logic

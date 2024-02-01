@@ -1,4 +1,4 @@
-package assiment1;
+
 
 public class Position {
     private int width;
