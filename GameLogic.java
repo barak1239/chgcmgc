@@ -1,5 +1,6 @@
 package assiment1;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 public class GameLogic implements PlayableLogic {
@@ -90,6 +91,7 @@ public class GameLogic implements PlayableLogic {
         for (int i = 0; i < this.corners.length; i++)
         	if (this.getPieceAtPosition(this.corners[i]) instanceof King) {
         		this.player2.anotherOne();
+        		this.printGameLog();
         		return true;
         	}
     	
@@ -104,7 +106,9 @@ public class GameLogic implements PlayableLogic {
         		if (temp == null || temp.getOwner().isPlayerOne()) return false;
         	}
     	}
+    	
     	this.player1.anotherOne();
+    	this.printGameLog();
         return true;
     }
 
@@ -169,17 +173,25 @@ public class GameLogic implements PlayableLogic {
     @Override
     public void undoLastMove() {
     	if (!this.moves.isEmpty()) {
-    		int id  = this.moves.pop();
-    		Position current_pos = ((ConcretePiece)this.pieces[id]).undo();
-    		Position last_pos = ((ConcretePiece)this.pieces[id]).getPosition();
-    		this.setPieceAtPosition(last_pos, this.pieces[id]);
+    		ConcretePiece killer = null;
     		
-    		if (this.inBound(current_pos)) 
+    		this.turn = !this.turn;
+    		int id  = this.moves.pop();
+    		ConcretePiece piece = (ConcretePiece)this.pieces[id];
+    		
+    		Position current_pos = piece.undo();
+    		Position last_pos = piece.getPosition();
+    		this.setPieceAtPosition(last_pos, piece);
+    		
+    		
+    		if (this.inBound(current_pos)) {
+    			killer = (ConcretePiece)piece.getKiller();
+    			piece.setKiller(null);
+    			killer.addKills(-1);
     			this.setPieceAtPosition(current_pos, null);
-    		else {
-    			
-    			this.undoLastMove();
     		}
+    		else
+    			this.undoLastMove();
     	}
     }
 
@@ -214,14 +226,14 @@ public class GameLogic implements PlayableLogic {
                     ind++;
                     continue;
                 }
-        		if (this.getPieceAtPosition(wall) == null) continue;
-        		if (this.getPieceAtPosition(wall) instanceof King) continue;
         		for (int corner = 0; corner < this.corners.length; corner++)
         			if (wall.equals(this.corners[corner])) {
 	                    to_kill[ind] = temp_pos;
 	                    ind++;
 	                    continue;
         			}
+        		if (this.getPieceAtPosition(wall) == null) continue;
+        		if (this.getPieceAtPosition(wall) instanceof King) continue;
         		if (this.getPieceAtPosition(wall).getOwner().isPlayerOne() == this.getPieceAtPosition(b).getOwner().isPlayerOne()) {
                     to_kill[ind] = temp_pos;
                     ind++;
@@ -237,6 +249,8 @@ public class GameLogic implements PlayableLogic {
     	if (to_kill != null)
     		for (int i=0; i < to_kill.length; i++) 
     			if (to_kill[i] != null) {
+    				ConcretePiece killer = (ConcretePiece)this.getPieceAtPosition(killer_pos);
+    				((ConcretePiece)this.getPieceAtPosition(to_kill[i])).setKiller(killer);
     				this.saveMove(to_kill[i], new Position(-1, -1));
     				this.setPieceAtPosition(to_kill[i], null);
     			}
@@ -248,6 +262,38 @@ public class GameLogic implements PlayableLogic {
     	if (piece.isFirstMove()) piece.move(a);
     	piece.move(b);
     	this.moves.push(piece.getId() - 1);
+    }
+    
+    private void printGameLog() {
+    	Arrays.sort(this.pieces, new SortByPiece(1));
+    	for (int i = 0; i < this.pieces.length; i++) {
+    		ConcretePiece piece = (ConcretePiece)this.pieces[i];
+    		System.out.print(piece.toString());
+    		System.out.print(": ");
+    		System.out.print(Arrays.toString(piece.arrayMoves()));
+    		System.out.println();
+    	}
+    	System.out.println();
+    	
+    	Arrays.sort(this.pieces, new SortByPiece(2));
+    	for (int i = 0; i < this.pieces.length; i++) {
+    		ConcretePiece piece = (ConcretePiece)this.pieces[i];
+    		System.out.print(piece.toString());
+    		System.out.print(": ");
+    		System.out.print("%d kills".formatted(piece.getKills()));
+    		System.out.println();
+    	}
+    	System.out.println();
+    	
+    	Arrays.sort(this.pieces, new SortByPiece(3));
+    	for (int i = 0; i < this.pieces.length; i++) {
+    		ConcretePiece piece = (ConcretePiece)this.pieces[i];
+    		System.out.print(piece.toString());
+    		System.out.print(": ");
+    		System.out.print("%d squares".formatted(piece.culc_squares()));
+    		System.out.println();
+    	}
+    	Arrays.sort(this.pieces, new SortByPiece(0));
     }
 
 }

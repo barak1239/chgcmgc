@@ -29,8 +29,17 @@ public class Position {
         this.width = width;
     }
     
+    public int distance(Position other) {
+    	return (int) Math.sqrt(Math.pow(this.x() - other.x(), 2) + Math.pow(this.y() - other.y(), 2));
+    }
+    
     public boolean equals(Position other) {
     	return (this.width == other.width) && (this.length == other.length);
     }
-
+    
+    @Override
+    public String toString() {
+    	return "(%d, %d)".formatted(this.x(), this.y());
+    }
+    
 }
