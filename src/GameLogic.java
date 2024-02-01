@@ -1,4 +1,4 @@
-package assiment1;
+
 
 import java.util.Arrays;
 import java.util.Stack;
@@ -55,10 +55,11 @@ public class GameLogic implements PlayableLogic {
     	
     	this.setPieceAtPosition(b, this.getPieceAtPosition(a));
     	this.setPieceAtPosition(a, null);
-    	
+
         this.turn = !this.turn;
         this.kill(b, this.check_for_kill(b));
-    	
+    	if (isGameFinished())
+			printGameLog();
     	return true;
     }
 
@@ -91,7 +92,6 @@ public class GameLogic implements PlayableLogic {
         for (int i = 0; i < this.corners.length; i++)
         	if (this.getPieceAtPosition(this.corners[i]) instanceof King) {
         		this.player2.anotherOne();
-        		this.printGameLog();
         		return true;
         	}
     	
@@ -108,7 +108,6 @@ public class GameLogic implements PlayableLogic {
     	}
     	
     	this.player1.anotherOne();
-    	this.printGameLog();
         return true;
     }
 
@@ -184,7 +183,6 @@ public class GameLogic implements PlayableLogic {
     	if (!this.moves.isEmpty()) {
     		ConcretePiece killer = null;
     		
-    		this.turn = !this.turn;
     		int id  = this.moves.pop();
     		ConcretePiece piece = (ConcretePiece)this.pieces[id];
     		
@@ -194,7 +192,8 @@ public class GameLogic implements PlayableLogic {
     		
     		
     		if (this.inBound(current_pos)) {
-    			this.setPieceAtPosition(current_pos, null);
+				this.turn = !this.turn;
+				this.setPieceAtPosition(current_pos, null);
     		}
     		else {
     			killer = (ConcretePiece)piece.getKiller();
@@ -276,35 +275,42 @@ public class GameLogic implements PlayableLogic {
     }
     
     private void printGameLog() {
+		String lineOfAsterisks = "*".repeat(75);
     	Arrays.sort(this.pieces, new SortByPiece(1));
     	for (int i = 0; i < this.pieces.length; i++) {
     		ConcretePiece piece = (ConcretePiece)this.pieces[i];
-    		System.out.print(piece.toString());
+			if (!piece.isFirstMove()) {
+				System.out.print(piece.toString());
     		System.out.print(": ");
     		System.out.print(Arrays.toString(piece.arrayMoves()));
     		System.out.println();
-    	}
-    	System.out.println();
-    	
+    		}
+		}
+		System.out.println(lineOfAsterisks);
+
     	Arrays.sort(this.pieces, new SortByPiece(2));
     	for (int i = 0; i < this.pieces.length; i++) {
     		ConcretePiece piece = (ConcretePiece)this.pieces[i];
-    		System.out.print(piece.toString());
-    		System.out.print(": ");
-    		System.out.print("%d kills".formatted(piece.getKills()));
-    		System.out.println();
+			if (piece.getKills()>0) {
+				System.out.print(piece.toString());
+				System.out.print(": ");
+				System.out.print("%d kills".formatted(piece.getKills()));
+				System.out.println();
+			}
     	}
-    	System.out.println();
+		System.out.println(lineOfAsterisks);
     	
     	Arrays.sort(this.pieces, new SortByPiece(3));
     	for (int i = 0; i < this.pieces.length; i++) {
-    		ConcretePiece piece = (ConcretePiece)this.pieces[i];
-    		System.out.print(piece.toString());
-    		System.out.print(": ");
-    		System.out.print("%d squares".formatted(piece.culc_squares()));
-    		System.out.println();
-    	}
+			ConcretePiece piece = (ConcretePiece) this.pieces[i];
+			if (piece.culc_squares() > 0) {
+				System.out.print(piece.toString());
+				System.out.print(": ");
+				System.out.print("%d squares".formatted(piece.culc_squares()));
+				System.out.println();
+			}
+		}
     	Arrays.sort(this.pieces, new SortByPiece(0));
+		System.out.println(lineOfAsterisks);
     }
-
 }

@@ -1,4 +1,4 @@
-package assiment1;
+
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;

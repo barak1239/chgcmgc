@@ -1,4 +1,3 @@
-package assiment1;
 
 
 public class Pawn extends ConcretePiece{

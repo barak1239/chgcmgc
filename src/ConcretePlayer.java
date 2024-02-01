@@ -1,4 +1,3 @@
-package assiment1;
 
 public class ConcretePlayer implements Player{
     private boolean player1;

@@ -1,4 +1,3 @@
-package assiment1;
 
 import java.util.Stack;
 
@@ -20,6 +19,8 @@ public class ConcretePiece implements Piece{
         else counter_w++;
         this.id = counter_b + counter_w;
         this.name = String.format("%s%d", (!owner.isPlayerOne()) ? "A" : "D", (!owner.isPlayerOne()) ? counter_b : counter_w);
+        if (this.type=="♔︎")
+            this.name = "K7";
         this.positions = new Stack<Position>();
         this.killed_by = null;
         

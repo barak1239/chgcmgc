@@ -1,9 +1,10 @@
-package assiment1;
+
 
 import java.util.Comparator;
 
 public class SortByPiece implements Comparator<Piece> {
 	private int flag;
+	private boolean winner;
 	public SortByPiece(int flag) {
 		this.flag = flag;
 	}
