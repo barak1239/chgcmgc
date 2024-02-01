@@ -17,7 +17,6 @@ public class ConcretePlayer implements Player{
         return wins;
     }
     
-    // מה זה
     public void anotherOne(){
         wins++;
     }
