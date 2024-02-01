@@ -1,9 +1,12 @@
+package assiment1;
+
 public class King extends ConcretePiece{
-    private Player owner;
     private String type;
-    private Position position;
+    private String name;
     public King(Player owner) {
         super(owner);
+        this.name = "K7";
+        this.type = "♔︎";
     }
     @Override
     public String getType() {

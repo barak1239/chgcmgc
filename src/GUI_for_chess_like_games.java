@@ -1,3 +1,5 @@
+package assiment1;
+
 import javax.swing.*;
 import java.awt.*;
 

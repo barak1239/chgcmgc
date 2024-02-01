@@ -1,3 +1,5 @@
+package assiment1;
+
 /**
  * The Player interface defines the characteristics and behaviors of a player
  * in a chess-like game. Implementing classes should provide information about

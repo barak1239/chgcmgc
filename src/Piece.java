@@ -1,3 +1,5 @@
+package assiment1;
+
 /**
  * The Piece interface defines the characteristics of a game piece in a chess-like game.
  * Implementing classes should provide information about the player who owns the piece

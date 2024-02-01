@@ -1,3 +1,5 @@
+package assiment1;
+
 public class ConcretePlayer implements Player{
     private boolean player1;
     private int wins;
@@ -14,6 +16,7 @@ public class ConcretePlayer implements Player{
     public int getWins() {
         return wins;
     }
+    
     public void anotherOne(){
         wins++;
     }
