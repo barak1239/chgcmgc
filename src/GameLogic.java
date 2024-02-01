@@ -49,7 +49,7 @@ public class GameLogic implements PlayableLogic {
     			if (this.Board[j][i] != null)
                     return false;
     	
-    	ConcretePiece piece = (ConcretePiece)this.getPieceAtPosition(b);
+    	ConcretePiece piece = (ConcretePiece)this.getPieceAtPosition(a);
     	if (piece instanceof King) this.king = b;
     	this.saveMove(a, b);
     	
@@ -167,6 +167,15 @@ public class GameLogic implements PlayableLogic {
         Board[6][6] = this.pieces[11];
         Board[5][7] = this.pieces[12];
         
+        for (int i = 0; i < 11; i++) {
+        	for (int j = 0; j < 11; j++) {
+        		ConcretePiece piece = (ConcretePiece)this.getPieceAtPosition(new Position(i, j));
+        		if (piece != null) {
+        			piece.move(new Position(i, j));
+        		}
+        	}
+        }
+        
         
     }
     
@@ -185,13 +194,15 @@ public class GameLogic implements PlayableLogic {
     		
     		
     		if (this.inBound(current_pos)) {
+    			this.setPieceAtPosition(current_pos, null);
+    		}
+    		else {
     			killer = (ConcretePiece)piece.getKiller();
     			piece.setKiller(null);
     			killer.addKills(-1);
-    			this.setPieceAtPosition(current_pos, null);
-    		}
-    		else
     			this.undoLastMove();
+    		}
+    			
     	}
     }
 
